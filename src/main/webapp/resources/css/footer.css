@@ -1,0 +1,19 @@
+@charset "UTF-8";
+
+.main-footer {
+	background-color: #333;
+	color: white;
+	text-align: center;
+	padding: 20px;
+	font-size: 0.9rem;
+}
+
+.main-footer .social-links a {
+	margin: 0 10px;
+	color: #ccc;
+	text-decoration: none;
+}
+
+.main-footer .social-links a:hover {
+	color: white;
+}
