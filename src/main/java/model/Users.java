@@ -2,20 +2,22 @@ package model;
 
 public class Users {
     private int id;
-    private String loginId;
+    private String userId;
     private String password;
     private String name;
     private String email;
+    private String profileImageUrl;
 
     // Constructor
     public Users() {}
 
-    public Users(int id, String loginId, String password, String name, String email) {
+    public Users(int id, String userId, String password, String name, String email, String profileImageUrl) {
         this.id = id;
-        this.loginId = loginId;
+        this.userId = userId;
         this.password = password;
         this.name = name;
         this.email = email;
+        this.profileImageUrl = profileImageUrl;
     }
 
     // Getters and Setters
@@ -27,12 +29,12 @@ public class Users {
         this.id = id;
     }
 
-    public String getLoginId() {
-        return loginId;
+    public String getUserId() { // 수정된 메서드명
+        return userId;
     }
 
-    public void setLoginId(String loginId) {
-        this.loginId = loginId;
+    public void setUserId(String userId) { // 수정된 메서드명
+        this.userId = userId;
     }
 
     public String getPassword() {
@@ -57,5 +59,13 @@ public class Users {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
     }
 }

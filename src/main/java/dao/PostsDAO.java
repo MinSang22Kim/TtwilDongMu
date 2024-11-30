@@ -63,6 +63,28 @@ public class PostsDAO {
         return null;
     }
 
+    // READ: 랜덤 게시물 가져오기
+    public List<Posts> getRandomPosts(int limit) throws SQLException {
+        List<Posts> postsList = new ArrayList<>();
+        String sql = "SELECT * FROM Posts ORDER BY RAND() LIMIT ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, limit);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Posts post = new Posts(
+                            rs.getInt("id"),
+                            rs.getInt("userId"),
+                            rs.getString("content"),
+                            rs.getString("imagePath"),
+                            rs.getTimestamp("created_at")
+                    );
+                    postsList.add(post);
+                }
+            }
+        }
+        return postsList;
+    }
+
     // UPDATE: 게시글 수정
     public boolean updatePost(Posts post) throws SQLException {
         String sql = "UPDATE Posts SET content = ?, imagePath = ? WHERE id = ?";
