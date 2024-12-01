@@ -113,19 +113,19 @@ body {
 				alt="Profile Picture">
 		</div>
 		<div class="profile-info">
-			<h1>iamyoone</h1>
+			<h1>minji01</h1>
 			<i class="fas fa-cog settings"></i>
-			<div class="stats">게시물 7 • 팔로잉 2 • 팔로워 2</div>
+			<div class="stats">게시물 6 • 팔로잉 3 • 팔로워 2</div>
 			<div class="bio">일상 공유</div>
 		</div>
 	</div>
 	<div class="photo-grid">
 		<img src="./resources/images/posts/runner01.jpg" alt="Post 1">
-		<img src="./resources/images/posts/runner02.jpg" alt="Post 2">
-		<img src="./resources/images/posts/runner03.jpg" alt="Post 3">
-		<img src="./resources/images/posts/runner04.jpg" alt="Post 4">
-		<img src="./resources/images/posts/runner05.jpg" alt="Post 5">
-		<img src="./resources/images/posts/runner06.jpg" alt="Post 6">
+		<img src="./resources/images/posts/runner16.jpg" alt="Post 2">
+		<img src="./resources/images/posts/runner17.jpg" alt="Post 3">
+		<img src="./resources/images/posts/runner18.jpg" alt="Post 4">
+		<img src="./resources/images/posts/runner19.jpg" alt="Post 5">
+		<img src="./resources/images/posts/runner15.jpg" alt="Post 6">
 	</div>
 	<%@ include file="footer.jsp"%>
 </body>

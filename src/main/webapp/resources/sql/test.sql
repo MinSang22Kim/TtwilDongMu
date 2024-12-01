@@ -31,3 +31,10 @@ USE TtwilDongMu;
 
 -- 테이블들 확인
 show tables;
+
+-- 테이블들 조회
+SELECT * FROM Users;
+SELECT * FROM Posts;
+SELECT * FROM Comments;
+SELECT * FROM Likes;
+SELECT * FROM Follow;

@@ -28,7 +28,7 @@
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
-                session.setAttribute("userId", rs.getString("user_id"));
+                session.setAttribute("userId", rs.getString("user_id")); // 수정
                 session.setAttribute("userName", rs.getString("name"));
                 session.setAttribute("profileImage", rs.getString("profile_image_url"));
 

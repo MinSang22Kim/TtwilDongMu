@@ -20,49 +20,6 @@
 		profileImageUrl = "/resources/images/profile/default.jpg";
 	}
 
-	// 유효성 검사
-	if (userId == null || userId.isEmpty()) {
-		out.println("<script>");
-		out.println("alert('아이디를 입력해주세요.');");
-		out.println("history.back();");
-		out.println("</script>");
-		return;
-	}
-
-	if (password == null || password.isEmpty()) {
-		out.println("<script>");
-		out.println("alert('비밀번호를 입력해주세요.');");
-		out.println("history.back();");
-		out.println("</script>");
-		return;
-	}
-
-	if (name == null || name.isEmpty()) {
-		out.println("<script>");
-		out.println("alert('이름을 입력해주세요.');");
-		out.println("history.back();");
-		out.println("</script>");
-		return;
-	}
-
-	if (email == null || email.isEmpty()) {
-		out.println("<script>");
-		out.println("alert('이메일을 입력해주세요.');");
-		out.println("history.back();");
-		out.println("</script>");
-		return;
-	}
-
-	// 비밀번호 유효성 검사 (영어와 숫자를 포함해야 함)
-	String passwordRegex = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$"; // 최소 8자, 영어와 숫자 포함
-	if (!password.matches(passwordRegex)) {
-		out.println("<script>");
-		out.println("alert('비밀번호는 최소 8자 이상이며 영어와 숫자를 포함해야 합니다.');");
-		out.println("history.back();");
-		out.println("</script>");
-		return;
-	}
-
 	try {
 		// 중복 확인
 		String checkSql = "SELECT COUNT(*) FROM Users WHERE user_id = ? OR email = ?";
@@ -76,8 +33,8 @@
 
 		if (count > 0) {
 			out.println("<script>");
-			out.println("alert('이미 사용 중인 아이디입니다!');");
-			out.println("history.back();");
+			out.println("alert('이미 사용 중인 아이디나 이메일입니다. 다시 시도해주세요.');");
+			out.println("location.href='index.jsp';");
 			out.println("</script>");
 			return;
 		}
@@ -86,7 +43,7 @@
 		String sql = "INSERT INTO Users (user_id, password, name, email, profile_image_url) VALUES (?, ?, ?, ?, ?)";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, userId);
-		pstmt.setString(2, password);
+		pstmt.setString(2, password);  // 비밀번호는 암호화하여 저장하세요!
 		pstmt.setString(3, name);
 		pstmt.setString(4, email);
 		pstmt.setString(5, profileImageUrl);
@@ -112,7 +69,7 @@
 		e.printStackTrace();
 		out.println("<script>");
 		out.println("alert('회원가입 처리 중 오류가 발생했습니다. 관리자에게 문의하세요.');");
-		out.println("history.back();");
+		out.println("location.href='index.jsp';");
 		out.println("</script>");
 	}
 	%>
