@@ -107,6 +107,20 @@ body {
 </head>
 <body>
 <%@ include file="header.jsp"%>
+<%
+    // 세션에서 userId 확인
+    String loggedInUserId = (String) session.getAttribute("userId");
+
+    if (loggedInUserId == null) { // 로그인되지 않은 경우
+%>
+    <script>
+        alert('로그인이 필요합니다.');
+        window.location.href = './login.jsp'; // 로그인 페이지로 이동
+    </script>
+<%
+        return; // 이후 JSP 코드 실행 방지
+    }
+%>
 	<div class="profile-container">
 		<div class="profile-picture">
 			<img src="./resources/images/profile/profile01.jpg"
