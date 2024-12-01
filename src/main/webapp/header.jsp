@@ -1,8 +1,10 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>뛸동무</title>
+    <title><fmt:message key="title" /></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <style>
         @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-gov.min.css");
@@ -27,21 +29,13 @@
             font-weight: bold;
             font-size: 24px;
         }
-        .search-bar input[type="text"] {
+        /* .search-bar input[type="text"] {
             font-family: 'Pretendard', sans-serif;
             font-weight: 200;
             padding: 8px;
             margin-left: 20px;
             width: 300px;
-        }
-        .profile-icons a {
-            display: inline-block;
-        }
-        .profile-icons img {
-            height: 40px;
-            width: 40px;
-            border-radius: 20px;
-        }
+        } */
         .menu a {
             font-family: 'Pretendard', sans-serif;
             font-weight: 200;
@@ -49,7 +43,11 @@
             text-decoration: none;
             color: #333;
         }
-        /* Media Query for smaller screens */
+        .language-icon {
+            font-size: 18px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
         @media (max-width: 600px) {
             .header {
                 flex-direction: column;
@@ -77,45 +75,39 @@
     </style>
 </head>
 <body>
+    <c:set var="lang" value="${param.lang != null ? param.lang : 'ko'}" />
+    <fmt:setLocale value="${lang}" />
+    <fmt:setBundle basename="bundle.myBundle" />
+
     <div class="header">
         <div class="logo">
             <a href="./index.jsp" style="display: flex; align-items: center; text-decoration: none;">
-            <img src="./resources/images/logo.jpg" alt="Logo" style="height: 50px; width: auto;">
-            <span class="logo-text" style="color: #333;">뛸동무</span>
-        </a>
+                <img src="./resources/images/logo.jpg" alt="Logo" style="height: 50px; width: auto;">
+                <span class="logo-text" style="color: #333;"><fmt:message key="title" /></span>
+            </a>
         </div>
-        <div class="search-bar">
+        <!-- <div class="search-bar">
             <input type="text" placeholder="Search...">
-        </div>
+        </div> -->
 		<div class="menu">
-			<a href="./index.jsp"><i class="fas fa-home"></i></a> <a
-				href="./post.jsp"><i class="fas fa-compass"></i></a> <a
-				href="./event.jsp" onclick="showComingSoon(event)"><i
-				class="fas fa-calendar"></i></a> <a href="./newPost.jsp"><i
-				class="fas fa-pencil-alt"></i></a> <a href="./myprofile.jsp"
-				id="myProfileLink"><i class="fas fa-user"></i></a>
+			<a href="./index.jsp"><i class="fas fa-home"></i></a>  
+			<a href="./event.jsp" onclick="showComingSoon(event)"><i class="fas fa-calendar"></i></a> 
+			<a href="./newPost.jsp"><i class="fas fa-pencil-alt"></i></a> 
+			<a href="./myprofile.jsp" id="myProfileLink"><i class="fas fa-user"></i></a>
+            <!-- 다국어 아이콘 -->
+            <a href="?lang=${lang == 'ko' ? 'en' : 'ko'}" class="language-icon">
+                <i class="fas ${lang == 'ko' ? 'fa-language' : 'fa-globe'}"></i>
+            </a>
+            <span class="language-text">
+                ${lang == 'ko' ? '한국어' : 'English'}
+            </span>
 		</div>
 	</div>
     <script>
-		function showComingSoon(event) {
-			event.preventDefault();
-			alert('서비스 준비 중입니다.');
-		}
-		document.getElementById('myProfileLink').addEventListener('click', function(event) {
-	        // 로그인 상태 확인: 서버 세션 데이터에서 'userId'를 가져와 확인
-	        const userId = '<%= session.getAttribute("userId") %>';
-
-	        if (!userId) {
-	            // 비로그인 상태일 경우
-	            event.preventDefault(); // 기본 링크 동작 중지
-	            if (confirm('로그인 하시겠습니까?')) {
-	                window.location.href = './login.jsp';
-	            }
-	        } else {
-	            // 로그인 상태일 경우
-	            window.location.href = `./myprofile.jsp?userId=${userId}`;
-	        }
-	    });
-	</script>
+        function showComingSoon(event) {
+            event.preventDefault();
+            alert('<fmt:message key="title" />');
+        }
+    </script>
 </body>
 </html>
