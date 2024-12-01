@@ -4,14 +4,14 @@ import java.sql.Timestamp;
 
 public class Posts {
     private int id;
-    private int userId;
+    private String userId;
     private String content;
     private String imagePath;
     private Timestamp createdAt;
 
     public Posts() {}
 
-    public Posts(int id, int userId, String content, String imagePath, Timestamp createdAt) {
+    public Posts(int id, String userId, String content, String imagePath, Timestamp createdAt) {
         this.id = id;
         this.userId = userId;
         this.content = content;
@@ -28,11 +28,11 @@ public class Posts {
         this.id = id;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

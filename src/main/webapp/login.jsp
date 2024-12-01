@@ -152,6 +152,13 @@ body {
             event.preventDefault();
             alert("서비스 준비 중입니다.");
         });
+
+        // 로그인 오류 메시지 표시
+        const loginError = "<%= session.getAttribute("loginError") != null ? session.getAttribute("loginError") : "" %>";
+        if (loginError) {
+            alert(loginError);
+            <% session.removeAttribute("loginError"); %> // 오류 메시지 세션에서 제거
+        }
     });
 </script>
 </head>
@@ -161,7 +168,7 @@ body {
 		<div class="login-container">
 			<h1>뛸동무</h1>
 			<form action="loginProcess.jsp" method="post">
-				<input type="text" name="loginId" placeholder="아이디" required>
+				<input type="text" name="userId" placeholder="아이디" required>
 				<input type="password" name="password" placeholder="비밀번호" required>
 				<button type="submit">로그인</button>
 			</form>
@@ -174,7 +181,7 @@ body {
 		</div>
 		<div class="signup-container">
 			<p>계정이 없으신가요?</p>
-			<a href="../auth/register.jsp">가입하기</a>
+			<a href="./register.jsp">가입하기</a>
 		</div>
 	</div>
 	<%@ include file="footer.jsp"%>

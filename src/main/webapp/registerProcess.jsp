@@ -1,6 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ page import="java.sql.*"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.sql.*" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,10 +9,10 @@
 <body>
 	<%@ include file="dbconn.jsp"%>
 	<%
-	String loginId = request.getParameter("loginId");
-	String password = request.getParameter("password");
-	String name = request.getParameter("name");
-	String email = request.getParameter("email");
+	String userId = request.getParameter("userId").trim();
+	String password = request.getParameter("password").trim();
+	String name = request.getParameter("name").trim();
+	String email = request.getParameter("email").trim();
 	String profileImageUrl = request.getParameter("profileImageUrl");
 
 	// 기본값 설정
@@ -22,14 +21,29 @@
 	}
 
 	try {
-		// 비밀번호 해시화 (BCrypt 사용 예)
-		/* String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt()); */
+		// 중복 확인
+		String checkSql = "SELECT COUNT(*) FROM Users WHERE user_id = ? OR email = ?";
+		PreparedStatement checkPstmt = conn.prepareStatement(checkSql);
+		checkPstmt.setString(1, userId);
+		checkPstmt.setString(2, email);
 
-		String sql = "INSERT INTO User (login_id, password, name, email, profile_image_url) VALUES (?, ?, ?, ?, ?)";
+		ResultSet rs = checkPstmt.executeQuery();
+		rs.next();
+		int count = rs.getInt(1);
+
+		if (count > 0) {
+			out.println("<script>");
+			out.println("alert('이미 사용 중인 아이디나 이메일입니다. 다시 시도해주세요.');");
+			out.println("location.href='index.jsp';");
+			out.println("</script>");
+			return;
+		}
+
+		// 회원가입 SQL 실행
+		String sql = "INSERT INTO Users (user_id, password, name, email, profile_image_url) VALUES (?, ?, ?, ?, ?)";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
-		pstmt.setString(1, loginId);
-		// pstmt.setString(2, hashedPassword);
-		pstmt.setString(2, password);
+		pstmt.setString(1, userId);
+		pstmt.setString(2, password);  // 비밀번호는 암호화하여 저장하세요!
 		pstmt.setString(3, name);
 		pstmt.setString(4, email);
 		pstmt.setString(5, profileImageUrl);
@@ -47,12 +61,10 @@
 			out.println("history.back();");
 			out.println("</script>");
 		}
-	} catch (SQLIntegrityConstraintViolationException e) {
-		// 중복 ID 또는 이메일 처리
-		out.println("<script>");
-		out.println("alert('이미 사용 중인 아이디나 이메일입니다. 다시 시도해주세요.');");
-		out.println("location.href='index.jsp';");
-		out.println("</script>");
+		pstmt.close();
+		rs.close();
+		checkPstmt.close();
+
 	} catch (Exception e) {
 		e.printStackTrace();
 		out.println("<script>");

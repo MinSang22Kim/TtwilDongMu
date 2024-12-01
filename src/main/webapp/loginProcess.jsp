@@ -8,37 +8,50 @@
 <title>로그인 처리</title>
 </head>
 <body>
-	<%
-		// 입력받은 아이디와 비밀번호 가져오기
-		String loginId = request.getParameter("loginId");
-		String password = request.getParameter("password");
+    <%
+        String userId = request.getParameter("userId");
+        String password = request.getParameter("password");
 
-		try {
-			// 사용자 정보 확인 쿼리
-			String sql = "SELECT * FROM User WHERE login_id = ? AND password = ?";
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, loginId);
-			pstmt.setString(2, password);
+        if (userId == null || userId.trim().isEmpty() || password == null || password.trim().isEmpty()) {
+            session.setAttribute("loginError", "아이디와 비밀번호를 모두 입력해주세요.");
+            response.sendRedirect("login.jsp");
+            return;
+        }
 
-			ResultSet rs = pstmt.executeQuery();
+        try {
+            // 'id'를 'user_id'로 수정
+            String sql = "SELECT user_id, name, profile_image_url FROM Users WHERE user_id = ? AND password = ?";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, userId);
+            pstmt.setString(2, password);
 
-			if (rs.next()) {
-				// 사용자 정보를 세션에 저장
-				session.setAttribute("userId", rs.getInt("id"));
-				session.setAttribute("userName", rs.getString("name"));
-				session.setAttribute("loginId", rs.getString("login_id"));
-				session.setAttribute("profileImage", rs.getString("profile_image_url"));
+            ResultSet rs = pstmt.executeQuery();
 
-				// 메인 페이지로 이동
-				response.sendRedirect("./index.jsp");
-			} else {
-				// 로그인 실패 시 알림 후 이전 페이지로 이동
-				out.println("<script>alert('아이디 또는 비밀번호가 잘못되었습니다.'); history.back();</script>");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			out.println("<script>alert('로그인 처리 중 오류가 발생했습니다. 관리자에게 문의하세요.'); history.back();</script>");
-		}
-	%>
+            if (rs.next()) {
+                session.setAttribute("userPrimaryId", rs.getString("user_id")); // 수정
+                session.setAttribute("userName", rs.getString("name"));
+                session.setAttribute("profileImage", rs.getString("profile_image_url"));
+
+                // 세션 유지 시간 설정
+                session.setMaxInactiveInterval(1800); // 30분 유지
+
+                // 사용자 쿠키 설정
+                Cookie userCookie = new Cookie("userId", userId);
+                userCookie.setMaxAge(30 * 60); // 30분 쿠키 유지
+                response.addCookie(userCookie);
+
+                response.sendRedirect("./index.jsp");
+            } else {
+                session.setAttribute("loginError", "아이디 또는 비밀번호가 잘못되었습니다.");
+                response.sendRedirect("login.jsp");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            session.setAttribute("loginError", "로그인 처리 중 오류가 발생했습니다. 관리자에게 문의하세요.");
+            response.sendRedirect("login.jsp");
+        } finally {
+            if (conn != null) try { conn.close(); } catch (SQLException e) { e.printStackTrace(); }
+        }
+    %>
 </body>
 </html>

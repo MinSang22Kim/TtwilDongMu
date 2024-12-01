@@ -142,8 +142,8 @@ body {
 		<div class="signup-container">
 			<h1>뛸동무</h1>
 			<p class="subtitle">다른 러너들과 함께 하고 싶다면 가입하세요!</p>
-			<form action="./registerProcess.jsp" method="post">
-				<input type="text" name="loginId" placeholder="아이디" required>
+			<form action="registerProcess.jsp" method="POST">
+				<input type="text" name="userId" placeholder="아이디" required>
 				<input type="password" name="password" placeholder="비밀번호" required>
 				<input type="email" name="email" placeholder="이메일" required>
 				<input type="text" name="name" placeholder="이름" required>

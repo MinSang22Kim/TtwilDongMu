@@ -1,9 +1,14 @@
 package dao;
 
-import model.Posts;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
+import model.Posts;
 
 public class PostsDAO {
     private Connection conn;
@@ -16,7 +21,7 @@ public class PostsDAO {
     public boolean addPost(Posts post) throws SQLException {
         String sql = "INSERT INTO Posts (userId, content, imagePath) VALUES (?, ?, ?)";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, post.getUserId());
+            stmt.setString(1, post.getUserId());
             stmt.setString(2, post.getContent());
             stmt.setString(3, post.getImagePath());
             return stmt.executeUpdate() > 0;
@@ -32,7 +37,7 @@ public class PostsDAO {
             while (rs.next()) {
                 Posts post = new Posts(
                         rs.getInt("id"),
-                        rs.getInt("userId"),
+                        rs.getString("userId"),
                         rs.getString("content"),
                         rs.getString("imagePath"),
                         rs.getTimestamp("created_at")
@@ -52,7 +57,7 @@ public class PostsDAO {
                 if (rs.next()) {
                     return new Posts(
                             rs.getInt("id"),
-                            rs.getInt("userId"),
+                            rs.getString("userId"),
                             rs.getString("content"),
                             rs.getString("imagePath"),
                             rs.getTimestamp("created_at")
@@ -73,7 +78,7 @@ public class PostsDAO {
                 while (rs.next()) {
                     Posts post = new Posts(
                             rs.getInt("id"),
-                            rs.getInt("userId"),
+                            rs.getString("userId"),
                             rs.getString("content"),
                             rs.getString("imagePath"),
                             rs.getTimestamp("created_at")
@@ -83,6 +88,17 @@ public class PostsDAO {
             }
         }
         return postsList;
+    }
+
+    public int getNextPostId() throws SQLException {
+        String sql = "SELECT AUTO_INCREMENT FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Posts'";
+        try (PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt("AUTO_INCREMENT");
+            }
+        }
+        throw new SQLException("Cannot retrieve next post ID.");
     }
 
     // UPDATE: 게시글 수정

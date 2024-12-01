@@ -25,7 +25,7 @@
             margin-left: 10px;
             font-family: 'Pretendard', sans-serif;
             font-weight: bold;
-            font-size: 24px; /* Increased font size */
+            font-size: 24px;
         }
         .search-bar input[type="text"] {
             font-family: 'Pretendard', sans-serif;
@@ -58,19 +58,19 @@
             .logo-text {
                 margin-top: 5px;
                 margin-left: 0;
-                font-size: 18px; /* Smaller font size on smaller screens */
+                font-size: 18px;
             }
             .menu {
                 width: 100%;
                 display: flex;
-                justify-content: space-around; /* Evenly space out menu items */
+                justify-content: space-around;
                 margin-top: 10px;
             }
             .menu a {
-                margin-right: 0; /* Remove margin on smaller screens */
+                margin-right: 0;
             }
             .search-bar input[type="text"] {
-                width: 100%; /* Full width on smaller screens */
+                width: 100%;
                 margin: 10px 0;
             }
         }
@@ -87,21 +87,35 @@
         <div class="search-bar">
             <input type="text" placeholder="Search...">
         </div>
-        <div class="menu">
-            <a href="./index.jsp"><i class="fas fa-home"></i></a>
-            <a href="./post.jsp"><i class="fas fa-compass"></i></a>
-            <a href="./myprofile.jsp"><i class="fas fa-user"></i></a>
-        </div>
-    </div>
+		<div class="menu">
+			<a href="./index.jsp"><i class="fas fa-home"></i></a> <a
+				href="./post.jsp"><i class="fas fa-compass"></i></a> <a
+				href="./event.jsp" onclick="showComingSoon(event)"><i
+				class="fas fa-calendar"></i></a> <a href="./newPost.jsp"><i
+				class="fas fa-pencil-alt"></i></a> <a href="./myprofile.jsp"
+				id="myProfileLink"><i class="fas fa-user"></i></a>
+		</div>
+	</div>
     <script>
-        document.getElementById('myProfileLink').addEventListener('click', function(event) {
-            if (!sessionStorage.getItem('isLoggedIn')) {
-                event.preventDefault(); // 기본 링크 동작 중지
-                if (confirm('로그인 하시겠습니까?')) {
-                    window.location.href = './login.jsp';
-                }
-            }
-        });
-    </script>
+		function showComingSoon(event) {
+			event.preventDefault();
+			alert('서비스 준비 중입니다.');
+		}
+		document.getElementById('myProfileLink').addEventListener('click', function(event) {
+	        // 로그인 상태 확인: 서버 세션 데이터에서 'userId'를 가져와 확인
+	        const userId = '<%= session.getAttribute("userId") %>';
+
+	        if (!userId) {
+	            // 비로그인 상태일 경우
+	            event.preventDefault(); // 기본 링크 동작 중지
+	            if (confirm('로그인 하시겠습니까?')) {
+	                window.location.href = './login.jsp';
+	            }
+	        } else {
+	            // 로그인 상태일 경우
+	            window.location.href = `./myprofile.jsp?userId=${userId}`;
+	        }
+	    });
+	</script>
 </body>
 </html>

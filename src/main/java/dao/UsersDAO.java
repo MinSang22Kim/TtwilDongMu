@@ -1,9 +1,14 @@
 package dao;
 
-import model.Users;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
+import model.Users;
 
 public class UsersDAO {
 	private Connection conn;
@@ -32,7 +37,7 @@ public class UsersDAO {
 		String sql = "SELECT * FROM Users";
 		try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
 			while (rs.next()) {
-				Users user = new Users(rs.getInt("id"), rs.getString("userId"), rs.getString("password"),
+				Users user = new Users(rs.getString("userId"), rs.getString("password"),
 						rs.getString("name"), rs.getString("email"), rs.getString("profileImage"));
 				usersList.add(user);
 			}
@@ -47,7 +52,7 @@ public class UsersDAO {
 			stmt.setString(1, userId);
 			try (ResultSet rs = stmt.executeQuery()) {
 				if (rs.next()) {
-					return new Users(rs.getInt("id"), rs.getString("userId"), rs.getString("password"),
+					return new Users(rs.getString("userId"), rs.getString("password"),
 							rs.getString("name"), rs.getString("email"), rs.getString("profileImage"));
 				}
 			}

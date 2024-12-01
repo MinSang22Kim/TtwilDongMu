@@ -1,7 +1,6 @@
 package model;
 
 public class Users {
-    private int id;
     private String userId;
     private String password;
     private String name;
@@ -11,8 +10,8 @@ public class Users {
     // Constructor
     public Users() {}
 
-    public Users(int id, String userId, String password, String name, String email, String profileImageUrl) {
-        this.id = id;
+    // Users.java
+    public Users(String userId, String password, String name, String email, String profileImageUrl) {
         this.userId = userId;
         this.password = password;
         this.name = name;
@@ -20,20 +19,11 @@ public class Users {
         this.profileImageUrl = profileImageUrl;
     }
 
-    // Getters and Setters
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getUserId() { // 수정된 메서드명
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) { // 수정된 메서드명
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
