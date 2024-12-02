@@ -1,4 +1,4 @@
-# 뛸동무: 러닝 커뮤니티
+# 뛸동무: 러닝 커뮤니티
 
 🏃‍♂️ About Running SNS Platform for Running Enthusiasts
 
@@ -42,4 +42,3 @@
 
 - **Multilingual Support**  
   - Supports multiple languages for a global user base
-  - 
